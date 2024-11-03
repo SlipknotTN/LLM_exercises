@@ -1,4 +1,4 @@
-# Udacity course "Large Language Models (LLMs) & Text Generation" exercise
+# Udacity course "Large Language Models (LLMs) & Text Generation" exercises
 
 https://www.udacity.com/enrollment/cd13318
 
