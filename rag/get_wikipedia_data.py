@@ -1,9 +1,8 @@
 import os
-import requests
 
 import pandas as pd
+import requests
 from dateutil.parser import parse as date_parser
-
 
 # Get the Wikipedia page for "2022" since OpenAI's models stop in 2021
 params = {

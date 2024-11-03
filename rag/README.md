@@ -6,6 +6,7 @@ the original dataset (the OpenAI models data end in 2021).
 ## Steps to create the chatbot
 - Get the 2022 data from the Wikipedia API
 - Create embeddings for the data
+- Find relevant data for a question
 
 ## Useful links:
 - Wikipedia API: https://en.wikipedia.org/w/api.php
