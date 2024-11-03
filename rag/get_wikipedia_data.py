@@ -11,7 +11,7 @@ params = {
     "titles": "2022",
     "explaintext": 1,
     "formatversion": 2,
-    "format": "json"
+    "format": "json",
 }
 resp = requests.get("https://en.wikipedia.org/w/api.php", params=params)
 response_dict = resp.json()
@@ -32,7 +32,7 @@ df = df[(df["text"].str.len() > 0) & (~df["text"].str.startswith("=="))]
 # row x + 1: "event A bla bla bla"
 # row x + 2: "event B bla bla bla"
 prefix = ""
-for (i, row) in df.iterrows():
+for i, row in df.iterrows():
     # If the row already has " - ", it already has the needed date prefix
     if " – " not in row["text"]:
         try:
