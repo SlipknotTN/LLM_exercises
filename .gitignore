@@ -6,3 +6,6 @@ openai_voc_key.txt
 
 # Python
 *.pyc
+
+# Data
+*.csv

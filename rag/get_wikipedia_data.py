@@ -1,4 +1,6 @@
+import os
 import requests
+
 import pandas as pd
 from dateutil.parser import parse as date_parser
 
@@ -44,3 +46,6 @@ for i, row in df.iterrows():
             row["text"] = prefix + " – " + row["text"]
 df = df[df["text"].str.contains(" – ")].reset_index(drop=True)
 print(f"{len(df)} sentences after cleaning")
+
+os.makedirs("./rag/data", exist_ok=True)
+df.to_csv("./rag/data/wiki_2022_data.csv")
