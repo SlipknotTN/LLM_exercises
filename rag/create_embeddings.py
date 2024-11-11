@@ -1,5 +1,6 @@
 import openai
 import pandas as pd
+
 from utils.openai_utils import set_openai_vocareum_key
 
 # Check OpenAI documentation about available embedding models

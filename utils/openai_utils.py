@@ -10,6 +10,7 @@ def set_openai_vocareum_key():
         openai.api_base = "https://openai.vocareum.com/v1"
         openai.api_key = vocareum_key_str
 
+
 def count_tokens(text: str, encoding: str = "cl100k_base"):
     """
     Count the number of tokens before calculating the embeddings
