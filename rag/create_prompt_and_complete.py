@@ -1,6 +1,12 @@
+import openai
 import pandas as pd
 
-from utils.openai_utils import count_tokens
+from utils.openai_utils import count_tokens, set_openai_vocareum_key
+
+# It has a training cutoff of September 2021 and token limit of 4,096 tokens.
+completion_model = "gpt-3.5-turbo-instruct"
+
+set_openai_vocareum_key()
 
 # Load the data sorted by distance with the question (you can't change the question here,
 # you would need to recompute the embeddings and the distances
@@ -45,3 +51,18 @@ for text in df_distances["text"].values:
 
 prompt = prompt_template.format("\n\n###\n\n".join(context), question)
 print(prompt)
+print(f"Prompt tokens: {count_tokens(prompt)}")
+
+initial_ukraine_answer = openai.Completion.create(
+    model="gpt-3.5-turbo-instruct",
+    prompt=question,
+    max_tokens=150
+)["choices"][0]["text"].strip()
+print(f"Initial answer: {initial_ukraine_answer}")
+
+answer_with_context = openai.Completion.create(
+    model="gpt-3.5-turbo-instruct",
+    prompt=prompt,
+    max_tokens=150
+)["choices"][0]["text"].strip()
+print(f"RAG answer: {answer_with_context}")
