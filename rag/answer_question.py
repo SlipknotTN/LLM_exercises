@@ -79,10 +79,17 @@ def do_parsing():
         help="Pass it to save the intermediate dataframe with the closest sentences to the question",
     )
     parser.add_argument(
-        "--max_tokens_count",
+        "--max_prompt_tokens",
         required=False,
         type=int,
         default=1000,
+        help="Maximum number of tokens to use in the prompt",
+    )
+    parser.add_argument(
+        "--max_answer_tokens",
+        required=False,
+        type=int,
+        default=150,
         help="Maximum number of tokens to use in the prompt",
     )
     args = parser.parse_args()
@@ -141,8 +148,8 @@ def main():
         current_token_count += text_token_count
 
         # Add the row of text to the list if we haven't exceeded the max.
-        # The last step can exceed max_tokens_count
-        if current_token_count <= args.max_tokens_count:
+        # The last step can exceed max_prompt_tokens
+        if current_token_count <= args.max_prompt_tokens:
             context.append(text)
         else:
             break
@@ -156,13 +163,15 @@ def main():
 
     # Answer without using the context
     initial_answer = openai.Completion.create(
-        model="gpt-3.5-turbo-instruct", prompt=args.question, max_tokens=150
+        model="gpt-3.5-turbo-instruct",
+        prompt=args.question,
+        max_tokens=args.max_answer_tokens,
     )["choices"][0]["text"].strip()
     print(f"Initial answer: {initial_answer}")
 
     # Answer using the context
     answer_with_context = openai.Completion.create(
-        model="gpt-3.5-turbo-instruct", prompt=prompt, max_tokens=150
+        model="gpt-3.5-turbo-instruct", prompt=prompt, max_tokens=args.max_answer_tokens
     )["choices"][0]["text"].strip()
     print(f"RAG answer: {answer_with_context}")
 

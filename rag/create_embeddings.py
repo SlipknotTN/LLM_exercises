@@ -11,6 +11,7 @@ set_openai_vocareum_key()
 df = pd.read_csv("./rag/data/wiki_2022_data.csv", index_col=0)
 
 # Get the embeddings
+# In order to avoid a `RateLimitError` the data is sent in batches to the `Embedding.create` function
 batch_size = 100
 embeddings = []
 for i in range(0, len(df), batch_size):
