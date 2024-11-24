@@ -1,18 +1,18 @@
 """
-Answer to a question on Wikipedia 2022 events using RAG
+Answer to a question on a text using RAG
 
 Requirements:
-- Get Wikipedia 2022 data get_wikipedia_data.py
-- Create embeddings with create_embeddings.py
+- Create the text embeddings with create_embeddings.py. It is necessary a CSV file with "text" and "embeddings"
+  column. Each row corresponds to a sentence or any text unit of the original document.
+
+The default arguments loads the Wikipedia 2022 events embeddings.
 
 Example with default arguments (run this from the repository root to correctly load the OpenAI key):
-python rag/answer_question.py \
---question "Who is the owner of Twitter?"
+    python rag/answer_question.py --question "Who is the owner of Twitter?"
 
 Expected output:
-
-Initial answer: The owner of Twitter is currently Jack Dorsey.
-RAG answer: Elon Musk
+    Initial answer: The owner of Twitter is currently Jack Dorsey.
+    RAG answer: Elon Musk
 """
 
 import argparse
@@ -53,7 +53,7 @@ def get_rows_sorted_by_relevance(
 def do_parsing():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        description="Answer question on Wikipedia 2022 data",
+        description="Answer question on text embeddings in CSV format",
     )
     parser.add_argument(
         "--input_embeddings",
@@ -62,16 +62,16 @@ def do_parsing():
         default="./rag/data/wiki_2022_embeddings.csv",
         help="Input dataset embeddings CSV",
     )
-    parser.add_argument("--question", required=True, type=str, help="Question to ask")
     parser.add_argument(
         "--embedding_model_name",
         required=False,
         type=str,
         default="text-embedding-ada-002",  # embeddings size 1536
         help="Embeddings model used to create the dataset embeddings. "
-        "It is necessary to re-use the same. "
+        "It is necessary to re-use the same embeddings model used to process all the input_embeddings. "
         "Check OpenAI documentation about available embedding models.",
     )
+    parser.add_argument("--question", required=True, type=str, help="Question to ask")
     parser.add_argument(
         "--closest_sentences_output_filepath",
         required=False,
