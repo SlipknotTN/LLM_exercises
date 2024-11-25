@@ -4,7 +4,7 @@ Create embeddings from a CSV file
 The CSV file must have a "text" column and each row represents a sentence or a unit of a long text.
 
 Requirements:
-- Extract the data in the input CSV format, e.g. using get_wikipedia_data.py
+- Extract the data in the input CSV format, e.g. using get_wikipedia_2022_events.py
 
 The default arguments loads the Wikipedia 2022 events CSV file.
 
@@ -17,10 +17,13 @@ The output CSV file will have "text" and "embeddings" columns.
 """
 
 import argparse
+import os
+
 import openai
 import pandas as pd
 
 from utils.openai_utils import set_openai_vocareum_key
+
 
 def do_parsing():
     parser = argparse.ArgumentParser(
@@ -32,13 +35,13 @@ def do_parsing():
         required=False,
         type=str,
         default="./rag/data/wiki_2022_data.csv",
-        help="Input CSV for which we want to extract the embeddings (one vector per row)"
+        help="Input CSV for which we want to extract the embeddings (one vector per row)",
     )
     parser.add_argument(
         "--request_size",
         type=int,
         default=100,
-        help="Text embeddings extraction single request size"
+        help="Text embeddings extraction single request size",
     )
     parser.add_argument(
         "--embedding_model_name",
@@ -57,6 +60,7 @@ def do_parsing():
     )
     return parser.parse_args()
 
+
 def main():
     args = do_parsing()
     print(args)
@@ -71,7 +75,8 @@ def main():
     for i in range(0, len(df), args.request_size):
         # Send text data to OpenAI model to get embeddings, the embeddings are at sentence level, not word
         response = openai.Embedding.create(
-            input=df.iloc[i : i + args.request_size]["text"].tolist(), engine=args.embedding_model_name
+            input=df.iloc[i : i + args.request_size]["text"].tolist(),
+            engine=args.embedding_model_name,
         )
 
         # Add embeddings to list
@@ -80,10 +85,14 @@ def main():
     # Add embeddings list to dataframe
     df["embeddings"] = embeddings
 
-    print(f"Embeddings space size using {args.embedding_model_name}: {len(embeddings[0])}")
+    print(
+        f"Embeddings space size using {args.embedding_model_name}: {len(embeddings[0])}"
+    )
 
+    os.makedirs(os.path.dirname(args.output_embeddings_filepath), exist_ok=True)
     df.to_csv(args.output_embeddings_filepath)
     print(f"Embeddings saved to {args.output_embeddings_filepath}")
+
 
 if __name__ == "__main__":
     main()

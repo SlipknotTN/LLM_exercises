@@ -4,7 +4,7 @@ Goal: use Wikipedia 2022 data to customize a chatbot on data not present in
 the original dataset (the OpenAI models data end in 2021).
 
 ## Steps to create the chatbot
-- Get the 2022 data from the Wikipedia API with `rag/get_wikipedia_data.py`
+- Get the 2022 data from the Wikipedia API with `rag/get_wikipedia_2022_events_data.py`
 - Create embeddings for the data with `rag/create_embeddings.py`
 - Answer to a question on the new data `rag/answer_question.py`
   - Find relevant data to the question
