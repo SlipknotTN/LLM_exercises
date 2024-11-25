@@ -1,5 +1,7 @@
 """
-Script to extract the 2022 events from Wikipedia using the API
+Script to extract the 2022 events from Wikipedia using the API.
+
+The script has custom data wrangling code for this specific use case.
 
 Output format: CSV file with "text" column, each row is an event.
 """
