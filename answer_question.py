@@ -28,6 +28,20 @@ from openai.embeddings_utils import distances_from_embeddings, get_embedding
 
 from utils.openai_utils import count_tokens, set_openai_vocareum_key
 
+# Prompt template to get an answer to the question
+PROMPT_TEMPLATE = \
+"""
+Answer the question based on the context below, and if the question can't be answered based on the context, say "I don't know"
+
+Context: 
+
+{}
+
+---
+
+Question: {}
+Answer:
+"""
 
 def get_rows_sorted_by_relevance(
     question: str, df: pd.DataFrame, embedding_model_name: str
@@ -96,7 +110,7 @@ def do_parsing():
         required=False,
         type=int,
         default=150,
-        help="Maximum number of tokens to use in the prompt",
+        help="Maximum number of tokens to use in the answer",
     )
     args = parser.parse_args()
     return args
@@ -125,24 +139,9 @@ def main():
     if args.closest_sentences_output_filepath:
         df_sorted_distances.to_csv(args.closest_sentences_output_filepath)
 
-    # Create the prompt with a template to get an answer to the question
-    prompt_template = """
-    Answer the question based on the context below, and if the question
-    can't be answered based on the context, say "I don't know"
-
-    Context: 
-
-    {}
-
-    ---
-
-    Question: {}
-    Answer:
-    """
-
-    # We want to exploit the available number of tokens for the model, but with a limit, because we are charged based
-    # on the number of tokens
-    current_token_count = count_tokens(prompt_template) + count_tokens(args.question)
+    # We want to exploit the available number of tokens for the model, but setting a limit,
+    # because we are charged based on the number of tokens
+    current_token_count = count_tokens(PROMPT_TEMPLATE) + count_tokens(args.question)
     print(f"Prompt template + question number of tokens: {current_token_count}")
 
     # Add context until max tokens (which can be exceeded with the last step)
@@ -161,11 +160,13 @@ def main():
             break
 
     # Create the prompt with the context in a specific format to highlight each line (event)
-    prompt = prompt_template.format("\n\n###\n\n".join(context), args.question)
+    prompt = PROMPT_TEMPLATE.format("\n\n###\n\n".join(context), args.question)
     print(f"Prompt: {prompt}")
     print(f"Prompt tokens: {count_tokens(prompt)}")
 
-    # From the documentation: the token count of your prompt plus max_tokens cannot exceed the model's context length.
+    # From the documentation: the token count of your prompt plus max_tokens
+    # (maximum number of tokens that can be generated in the completion)
+    # cannot exceed the model's context length.
 
     # Answer without using the context
     initial_answer = openai.Completion.create(
