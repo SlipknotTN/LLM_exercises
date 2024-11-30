@@ -13,8 +13,12 @@ Example with default arguments (run this from the repository root to correctly l
 Expected output:
     Initial answer: The owner of Twitter is currently Jack Dorsey.
     RAG answer: Elon Musk
-"""
 
+Example with another embeddings dataframe:
+    python answer_question.py \
+    --input_embeddings ./data/wiki_it_castelnuovo_garfagnana_embeddings.csv \
+    --question "Qual è il monumento simbolo di Castelnuovo di Garfagnana?"
+"""
 import argparse
 
 import numpy as np

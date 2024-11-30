@@ -39,7 +39,7 @@ def get_cleaned_text(element) -> str:
     """
     Strip text and remove '\n' inside the paragraph
     """
-    return element.get_text().strip().replace("\n", " ")
+    return element.get_text().strip().replace(u"\xa0"," ").replace("\n", " ")
 
 
 def do_parsing():
