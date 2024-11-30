@@ -10,7 +10,7 @@ is the final project, but most of the code is the same.
 ### RAG exercise 1: get answers about 2022 events
 
 Goal: use Wikipedia 2022 data to customize a chatbot on data not present in
-the original dataset (the OpenAI models data end in 2021).
+the original dataset (the OpenAI models data ends in 2021).
 
 ### RAG exercise 2 (final project): get answers from a custom dataset
 
@@ -20,17 +20,22 @@ Then build a chatbot able to answer on the new data.
 
 ### Steps to create the chatbot
 
-The difference between the two exercises is the first page retrieval step,
-then the scripts are exactly the same.
+The difference between the two exercises is the first page retrieval step with dedicated parsing functions,
+then the other scripts are exactly the same.
 
 - Get the page data as dataframe CSV
   - Exercise 1: get the 2022 data from Wikipedia API with `get_wikipedia_2022_events_data.py`
   - Exercise 2: get a custom page data from Wikipedia API with `get_wikipedia_page.py`
 - Create embeddings for the data with `create_embeddings.py`
 - Answer to a question on the new data `answer_question.py`
-  - Find relevant data to the question
+  - Find relevant data to the question comparing the question and text embeddings
   - Add the context to the prompt
   - Get the answer using OpenAI Completions API
+
+For the final project it was requested to submit a jupyter notebook, 
+here saved as `custom_chatbot_project.ipynb`.
+It performs the same steps of the aforementioned scripts, but you can use it 
+to send the questions in a user-friendly interactive way.
 
 ### Useful links:
 - Wikipedia API: https://en.wikipedia.org/w/api.php
