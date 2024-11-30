@@ -9,3 +9,6 @@ openai_voc_key.txt
 
 # Data
 *.csv
+
+# Jupyter notebooks
+.ipynb_checkpoints
