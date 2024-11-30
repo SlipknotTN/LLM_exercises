@@ -33,9 +33,11 @@ def get_rows_sorted_by_relevance(
     question: str, df: pd.DataFrame, embedding_model_name: str
 ) -> pd.DataFrame:
     """
-    Function that takes in a question string and a dataframe containing
-    rows of text and associated embeddings, and returns that dataframe
-    sorted from least to most relevant for that question
+    Function that takes in input a question string, a dataframe and an embedding model name.
+    Each dataframe row includes a text and the associated embeddings vector.
+
+    Returns:
+        Copy of the input dataframe sorted by descending question relevance
     """
     # Get embeddings for the question text
     question_embeddings = get_embedding(question, engine=embedding_model_name)
