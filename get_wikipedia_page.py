@@ -184,7 +184,7 @@ def main():
                     # The list could already been started with a different ul or dl element,
                     # in this case we don't support nesting and we simply concatenate
                     print(
-                        f"WARNING: probably there is a nested list, it will be squashed into a single level, list element content: '{list_content_str}'"
+                        f"WARNING: probably there is a nested list; it will be squashed into a single level, list element content: '{list_content_str}'"
                     )
                     sentences_dict[key][-1] += "; " + list_content_str
                 else:
